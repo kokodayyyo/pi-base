@@ -21,7 +21,6 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const WORKSPACE = {
 	"@earendil-works/chord": "packages/chord/src",
 	"@earendil-works/pi-ai": "packages/ai/src",
-	"@earendil-works/pi-durable": "packages/durable/src",
 	"@earendil-works/pi-agent-core": "packages/agent/src",
 	"@earendil-works/pi-codemode": "packages/codemode/src",
 	"@earendil-works/pi-telemetry": "packages/telemetry/src",
@@ -54,21 +53,6 @@ const BUDGETS = {
 			maxFiles: 9,
 			forbid: ["codemode/src/index.ts", "runtime/host.ts", "runtime/worker.ts", "codemode/src/wasm.ts"],
 		},
-	},
-	"packages/durable": {
-		".": {
-			// Tool argument validation reaches TypeBox; provider-session creation reaches pi-ai's lean UUID utility; the
-			// memory and SQLite storages share scan order and cursor handling.
-			maxFiles: 63,
-			forbid: [
-				"packages/ai/src/index.ts",
-				"packages/ai/src/utils/typebox-helpers.ts",
-				// Photon (WebAssembly) loads only through `./images`.
-				"packages/durable/src/images/",
-			],
-		},
-		// The file tools reach their environment helpers and the Harness definitions they need, not the Harness itself.
-		"./tools": { maxFiles: 17, forbid: ["packages/durable/src/images/"] },
 	},
 };
 
